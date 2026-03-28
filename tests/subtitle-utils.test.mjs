@@ -44,7 +44,7 @@ test("convertAiSubtitleJsonToPlainText groups lines into 2-minute buckets and sk
     type: "AIsubtitle",
     body: [
       { from: 1.2, to: 2.3, content: "第一句" },
-      { from: 50, to: 55, content: "第二句" },
+      { from: 50, to: 55, content: "第二句？" },
       { from: 121, to: 123, content: "第三句" },
       { from: 240.5, to: 241, content: "第四句" },
       { from: 260, to: 261, content: "   " }
@@ -55,14 +55,13 @@ test("convertAiSubtitleJsonToPlainText groups lines into 2-minute buckets and sk
     convertAiSubtitleJsonToPlainText(payload),
     [
       "0~2min",
-      "第一句",
-      "第二句",
+      "第一句。第二句？",
       "",
       "2min~4min",
-      "第三句",
+      "第三句。",
       "",
       "4min~6min",
-      "第四句"
+      "第四句。"
     ].join("\n")
   );
 });
