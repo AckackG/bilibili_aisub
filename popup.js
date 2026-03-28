@@ -176,7 +176,7 @@ async function downloadSubtitle(sourceKey) {
       return;
     }
 
-    setStatus("下载已开始，ZIP 内含 JSON 和 SRT。");
+    setStatus("下载已开始，ZIP 内含 JSON、SRT 和纯文字 TXT。");
   } catch (error) {
     console.error("Failed to start download:", error);
     setStatus("下载失败，后台脚本可能已失效。", "error");

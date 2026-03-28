@@ -1,5 +1,6 @@
 import {
   buildDownloadBaseName,
+  convertAiSubtitleJsonToPlainText,
   convertAiSubtitleJsonToSrt,
   countNonEmptySubtitleLines,
   extractVideoIdFromUrl,
@@ -264,6 +265,10 @@ function createDownloadFiles(payload, baseName) {
     {
       name: `${baseName}.srt`,
       content: convertAiSubtitleJsonToSrt(payload)
+    },
+    {
+      name: `${baseName}.txt`,
+      content: convertAiSubtitleJsonToPlainText(payload)
     }
   ];
 }
