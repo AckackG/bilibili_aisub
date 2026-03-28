@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bilibili AI 字幕下载</title>
+    <link rel="stylesheet" href="popup.css">
+  </head>
+  <body>
+    <main class="popup">
+      <header class="popup__header">
+        <p class="popup__eyebrow">Bilibili AI Subtitle Downloader</p>
+        <h1 class="popup__title">AI 字幕下载</h1>
+        <p class="popup__description">检测到字幕后可直接下载 ZIP，内含原始 JSON 和 SRT。</p>
+      </header>
+
+      <section id="page-meta" class="page-meta" hidden></section>
+      <section id="status" class="status"></section>
+      <ul id="subtitle-list" class="subtitle-list"></ul>
+    </main>
+
+    <script type="module" src="popup.js"></script>
+  </body>
+</html>

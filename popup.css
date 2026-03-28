@@ -1,0 +1,145 @@
+:root {
+  color-scheme: light;
+  --bg: #f7f3ee;
+  --panel: #fffaf5;
+  --text: #1a1714;
+  --muted: #6f655d;
+  --accent: #c62828;
+  --border: #ead9ca;
+  --button: #1f6f5f;
+  --button-hover: #175649;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 360px;
+  background:
+    radial-gradient(circle at top right, rgba(198, 40, 40, 0.08), transparent 42%),
+    linear-gradient(180deg, #fffaf5 0%, #f3ece5 100%);
+  color: var(--text);
+  font: 14px/1.5 "Segoe UI", "Microsoft YaHei UI", sans-serif;
+}
+
+.popup {
+  padding: 16px;
+}
+
+.popup__header {
+  margin-bottom: 14px;
+}
+
+.popup__eyebrow {
+  margin: 0 0 4px;
+  color: var(--accent);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.popup__title {
+  margin: 0;
+  font-size: 22px;
+  line-height: 1.15;
+}
+
+.popup__description {
+  margin: 8px 0 0;
+  color: var(--muted);
+}
+
+.page-meta,
+.status,
+.subtitle-item {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--panel);
+}
+
+.page-meta,
+.status {
+  padding: 12px 14px;
+}
+
+.page-meta {
+  margin-bottom: 12px;
+}
+
+.page-meta__title {
+  margin: 0 0 4px;
+  font-weight: 700;
+}
+
+.page-meta__sub {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.status {
+  color: var(--muted);
+}
+
+.status[data-tone="error"] {
+  border-color: #ef9a9a;
+  background: #fff0f0;
+  color: #8a1c1c;
+}
+
+.status[data-tone="ready"] {
+  display: none;
+}
+
+.subtitle-list {
+  display: grid;
+  gap: 10px;
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.subtitle-item {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+  padding: 12px 14px;
+}
+
+.subtitle-item__lang {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.subtitle-item__meta {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.subtitle-item__button {
+  align-self: center;
+  min-width: 92px;
+  padding: 10px 14px;
+  border: none;
+  border-radius: 999px;
+  background: var(--button);
+  color: #ffffff;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 120ms ease;
+}
+
+.subtitle-item__button:hover:not(:disabled) {
+  background: var(--button-hover);
+}
+
+.subtitle-item__button:disabled {
+  background: #a0aaa6;
+  cursor: progress;
+}

@@ -1,0 +1,10 @@
+{
+  "name": "bilibili_aisub",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check": "node --check background.js && node --check content.js && node --check popup.js && node --check lib/subtitle.js && node --check lib/zip.js && node --check lib/data-url.js",
+    "test": "node --test tests/*.test.mjs"
+  }
+}
