@@ -3,6 +3,8 @@
   const POLL_INTERVAL_MS = 1000;
   let lastPageUrl = "";
   let lastTitle = "";
+  let isDisposed = false;
+  let pollTimer = null;
 
   function extractVideoId(url) {
     if (typeof url !== "string") {
@@ -21,27 +23,93 @@
     return title.replace(/\s*[-_]\s*哔哩哔哩(?:_bilibili)?\s*$/i, "").trim();
   }
 
+  function isExtensionContextInvalidated(error) {
+    if (!error) {
+      return false;
+    }
+
+    const message = typeof error?.message === "string" ? error.message : String(error);
+    return /Extension context invalidated/i.test(message);
+  }
+
+  function disposeBridge() {
+    if (isDisposed) {
+      return;
+    }
+
+    isDisposed = true;
+    window.removeEventListener("pageshow", refreshContextIfNeeded);
+
+    if (pollTimer !== null) {
+      window.clearInterval(pollTimer);
+      pollTimer = null;
+    }
+  }
+
+  function handleRuntimeFailure(error) {
+    if (!isExtensionContextInvalidated(error)) {
+      return false;
+    }
+
+    disposeBridge();
+    return true;
+  }
+
+  function getRuntime() {
+    try {
+      return chrome?.runtime ?? null;
+    } catch {
+      return null;
+    }
+  }
+
   function sendPageContext() {
+    if (isDisposed) {
+      return;
+    }
+
     const pageUrl = window.location.href;
     const title = sanitizeTitle(document.title);
     const videoId = extractVideoId(pageUrl);
+    const runtime = getRuntime();
 
-    chrome.runtime.sendMessage(
-      {
-        type: MESSAGE_TYPE,
-        payload: {
-          pageUrl,
-          title,
-          videoId
+    if (!runtime?.sendMessage) {
+      disposeBridge();
+      return;
+    }
+
+    try {
+      runtime.sendMessage(
+        {
+          type: MESSAGE_TYPE,
+          payload: {
+            pageUrl,
+            title,
+            videoId
+          }
+        },
+        () => {
+          if (handleRuntimeFailure(runtime.lastError)) {
+            return;
+          }
+
+          void runtime.lastError;
         }
-      },
-      () => {
-        void chrome.runtime?.lastError;
+      );
+    } catch (error) {
+      if (handleRuntimeFailure(error)) {
+        return;
       }
-    );
+
+      console.warn("Failed to send page context:", error);
+    }
   }
 
   function refreshContextIfNeeded() {
+    if (isDisposed) {
+      return;
+    }
+
     const currentPageUrl = window.location.href;
     const currentTitle = sanitizeTitle(document.title);
 
@@ -55,6 +123,10 @@
   }
 
   refreshContextIfNeeded();
+  if (isDisposed) {
+    return;
+  }
+
   window.addEventListener("pageshow", refreshContextIfNeeded);
-  setInterval(refreshContextIfNeeded, POLL_INTERVAL_MS);
+  pollTimer = window.setInterval(refreshContextIfNeeded, POLL_INTERVAL_MS);
 })();
